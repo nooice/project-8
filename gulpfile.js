@@ -19,7 +19,7 @@ gulp.task("concatJS", (cb) => {
             ]),
         maps.init(),
         concat('global.js'),
-        maps.write('./'),
+        maps.write('../dist/scripts'),
         gulp.dest('js')
     ],
     cb
@@ -75,12 +75,8 @@ gulp.task('distribute', ["styles", "images"], (cb) => {
 });
 
 gulp.task('build', ["clean"], () => {
-    gulp.start('distribute');
+    return gulp.start('distribute');
 });
-
-// gulp.task('webserver', () => {
-//     // gulp
-// })
 
 gulp.task("default", ["build"], (cb) => {
     pump([
