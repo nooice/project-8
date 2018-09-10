@@ -26,9 +26,7 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
     "gulp-webserver": "^0.9.1",
-    "pump": "^3.0.0"
-  },
-  "dependencies": {
+    "pump": "^3.0.0",
     "gulp-csso": "^3.0.1"
   }
 }
