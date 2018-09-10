@@ -10,6 +10,7 @@ var image = require('gulp-image');
 var del = require('del');
 var pump = require('pump');
 var webserver = require('gulp-webserver');
+var csso = require('gulp-csso');
 
 gulp.task("concatJS", (cb) => {
     pump([
@@ -37,14 +38,33 @@ gulp.task("scripts", ["concatJS"], (cb) => {
     );
 });
 
-gulp.task("styles", (cb) => {
+gulp.task("concatCSS", (cb) => {
     pump([
         gulp.src("sass/global.scss"),
         maps.init(),
         sass(),
         maps.write("./"),
-        gulp.dest('dist/styles'),
         gulp.dest('css')
+    ],
+    cb
+    );
+});
+
+gulp.task("moveCSS", ["concatCSS"], (cb) => {
+    pump([
+        gulp.src("css/global.css.map"),
+        gulp.dest('dist/styles')
+    ],
+    cb
+    );
+});
+
+gulp.task("styles", ["moveCSS"], (cb) => {
+    pump([
+        gulp.src("css/global.css"),
+        csso(),
+        rename("all.min.css"),
+        gulp.dest('dist/styles')
     ],
     cb
     );
@@ -75,7 +95,7 @@ gulp.task('distribute', ["styles", "images"], (cb) => {
 });
 
 gulp.task('build', ["clean"], () => {
-    return gulp.start('distribute');
+    gulp.start('distribute');
 });
 
 gulp.task("default", ["build"], (cb) => {
